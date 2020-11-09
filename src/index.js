@@ -3,13 +3,21 @@ const GameController = require("./controllers/gameController"),
       KeypressMiddleware = require("./middleware/keypress"),
       cli = require("./listeners/cli"),
       figures = require("./constants/figures"),
-      gameController = new GameController(20, 20, .3, figures),
-      viewController = new ViewController(gameController),
-      keypressMiddleware = new KeypressMiddleware(gameController, viewController);
+      ssh = require("./listeners/ssh"),
+      createGame = (console, endHandler) => {
+        const gameController = new GameController(20, 20, .3, figures),
+              viewController = new ViewController(gameController, console),
+              keypressMiddleware = new KeypressMiddleware(gameController, viewController, endHandler);
 
-viewController.startScreen(); // показ начального экрана
+        viewController.startScreen(); // показ начального экрана
 
-cli(keypressMiddleware.keypress); // запуск слушателя нажатия клавиш в терминале
+        return keypressMiddleware.keypress;
+      };
+
+module.exports = {
+  cli: () => cli(createGame(console)), // запуск слушателя нажатия клавиш в терминале
+  ssh: () => ssh(createGame) // запуск слушателя ssh
+};
 
 
 
