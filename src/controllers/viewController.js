@@ -32,21 +32,22 @@ const { flatten } = require("lodash"),
 // контроллер отображения. Принимает объект поля
 
 module.exports = class ViewController {
-  constructor(gameController){
+  constructor(gameController, console){
     this.gameController = gameController; // контроллер игры
     this.field = gameController.field; // объект поля игры
+    this.console = console;
   }
 
   // показать начальный экран
   startScreen(){
-    console.clear(); // очищение консоли
-    console.log(`${controlsInfo}\nнажмите любую клавишу для начала игры`); // отображение управления и что нужно сделать для начала игры
+    this.console.clear(); // очищение консоли
+    this.console.log(`${controlsInfo}\nнажмите любую клавишу для начала игры`); // отображение управления и что нужно сделать для начала игры
   }
 
   // отображение кадра игры
   render(){
-    console.clear(); // очищение консоли
-    console.log(controlsInfo); // отображение инофрмации об управлении
+    this.console.clear(); // очищение консоли
+    this.console.log(controlsInfo); // отображение инофрмации об управлении
     const { width, height, figures } = this.field, // получение ширины, высоты и фигур на поле
           pixels = flatten(figures.map(({ pixelsArray }) => pixelsArray.map(({ positionX, positionY, color }) => ({ positionX, positionY, color })))), // массив всех пикселей на поле
           delimiter = line.horizontal.repeat(width), // разделитель
@@ -103,7 +104,7 @@ module.exports = class ViewController {
 
     const displayText = displayTextArray.join("\n"); // соединение всех строк для отображения в единый текст
 
-    console.log(displayText); // отображение на экране
+    this.console.log(displayText); // отображение на экране
     return displayText; // возврат текста для отображения
   }
 }

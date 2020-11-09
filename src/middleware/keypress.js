@@ -1,11 +1,14 @@
 // прослойка для реализации действий в игре по нажатию клавиш
 
+const defaultEnd = () => process.exit(0); // выключаем скрипт
+
 module.exports = class KeypressMiddleware {
-  constructor(gameController, viewController){
+  constructor(gameController, viewController, endHandle = defaultEnd){
     this.gameController = gameController; // запись ссылки на конттроллер игры
     this.viewController = viewController; // запись ссылки на контроллер отображения
     this.firstKeypress = false; // установка флага первого нажатия клавиши на отрицательное значение
     this.keypress = this.keypress.bind(this); // привязка функции к экземпляру класса
+    this.endHandle = endHandle;
   }
 
   // функция - обработчик нажатия клавиши. Принимает идетификатор нажатия клавиши
@@ -18,7 +21,7 @@ module.exports = class KeypressMiddleware {
     } else {
       if (key === "escape") { // если нажата клавиша escape
         gameController.stopGame(); // завершаем игру
-        process.exit(0); // выключаем скрипт
+        this.endHandle && this.endHandle(); // вызываем функцию отключения
       } else { // иначе
         if (!gameController.gameEnd) { // если игры не окончена
           if (gameController.gameInterval) { // если игра идёт
