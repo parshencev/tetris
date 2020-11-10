@@ -22,6 +22,7 @@
   "dependencies": {
     "app-root-path": "^3.0.0",
     "chalk": "^4.1.0",
+    "config": "^3.3.2",
     "declint-ru": "^0.1.0",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
