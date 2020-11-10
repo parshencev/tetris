@@ -2,3 +2,5 @@ node_modules/
 .nyc_output/
 log/
 keys/
+config/*
+!config/default.json

@@ -13,7 +13,8 @@ const ssh2 = require("ssh2"),
       },
       newConnection = (ip, username) => connections.push({ ip, username }),
       getConnection = ip => connections.find(({ ip:i }) => i === ip),
-      isConnnect = ip => !!~connections.findIndex(({ ip:i }) => i === ip);
+      isConnnect = ip => !!~connections.findIndex(({ ip:i }) => i === ip),
+      { port:defaultPort, host:defaultHost } = require("config").get("ssh-server");
 
 !fs.existsSync(keysFolderPath) && fs.mkdirSync(keysFolderPath);
 
@@ -54,4 +55,4 @@ module.exports = (createGame, { host, port, ...serverProps } = {}) => new ssh2.S
         });
       });
   }).on("end", () => deleteConnection(ip));
-}).listen(port || 3000, host || "localhost");
+}).listen(port || defaultPort, host || defaultHost);
